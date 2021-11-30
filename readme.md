@@ -60,7 +60,7 @@ The list is heap-allocated and thus needs to be freed. This can be done using `L
 #include <stdio.h>
 #include "list.h"
 
-LIST_DEF(int, list_int_t)
+LIST_DEF(int, list_int_t);
 
 int main() {
     list_int_t* LIST_NEW(list_int_t);
