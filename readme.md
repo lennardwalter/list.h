@@ -42,7 +42,7 @@ You can now perform the following list operations. The first argument is always 
 | `LIST_REMOVE`  | Remove the element at `index`                 | `index: size_t`             | `T`    |
 | `LIST_POP`     | Retrieve the element at `index` and remove it | `index: size_t`             | `T`    |
 
-To efficiently iterate through the list, use `LIST_FOREACH`/`LIST_FOREACH_REVERSE`
+To efficiently iterate through the list, use `LIST_FOREACH`/`LIST_FOREACH_REVERSE`. Disclamer: `break`/`continue` don't work in these macros, so you have to use `goto` to exit the loop early.
 
 ```c
 LIST_FOREACH(list, el) {
