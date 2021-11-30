@@ -9,9 +9,6 @@
 #define _LIST_NODE_TYPE(type) type##_node_t
 #define _LIST_NODE_TYPE_P(type) _LIST_NODE_TYPE(type)*
 
-#define _LIST_TOK_PASTE3(a, b, c) a##b##c
-#define _LIST_TOK_PASTE2(a, b) a##b
-
 #define LIST_DEF(eltype, listtype)                                                       \
     typedef struct _LIST_NODE_TYPE(listtype) {                                           \
         eltype value;                                                                    \
@@ -26,23 +23,15 @@
         size_t length;                                                                   \
     } listtype;
 
-#define LIST_NEW_IMPL(listtype, name)                                                    \
-    listtype* list = ({                                                                  \
-        listtype* list = malloc(sizeof(listtype));                                       \
-        list->head = NULL;                                                               \
-        list->tail = NULL;                                                               \
-        list->node_size = sizeof(_LIST_NODE_TYPE(listtype));                             \
-        list->length = 0;                                                                \
-        list;                                                                            \
+#define LIST_NEW(listtype)                                                               \
+    ({                                                                                   \
+        listtype* __list_tmp = malloc(sizeof(listtype));                                 \
+        __list_tmp->head = NULL;                                                         \
+        __list_tmp->tail = NULL;                                                         \
+        __list_tmp->node_size = sizeof(_LIST_NODE_TYPE(listtype));                       \
+        __list_tmp->length = 0;                                                          \
+        __list_tmp;                                                                      \
     });
-
-#define LIST_NEW_D_IMPL(eltype, name, counter)                                           \
-    LIST_DEF(eltype, _LIST_TOK_PASTE3(__list, counter, _t))                              \
-    LIST_NEW_IMPL(_LIST_TOK_PASTE3(__list, counter, _t), name)
-
-#define LIST_NEW_D(eltype, name) LIST_NEW_D_IMPL(eltype, name, __COUNTER__)
-
-#define LIST_NEW(listtype, name) LIST_NEW_IMPL(listtype, name)
 
 #define LIST_FREE(list)                                                                  \
     do {                                                                                 \

@@ -17,27 +17,21 @@ Include the header file
 
 ### Creating a list
 
-There are two ways to create a list. If you need to know type of the list (e.g. to use it as a struct member or pass it to other functions) you can define your list type for a given element type like this:
+To create a list, you first need to declare its type. This can by done with `LIST_DEF`. You usually want to do this in a header file, but it even works within a function body. The first argument specifies the type of the list elements, and the second argument the type of the list itself.
 
 ```c
 LIST_DEF(int, list_int_t);
 ```
 
-You can then create a list of this type, where `list` is the variable name of the created list.
+You can then create a list of this type. Note that `LIST_NEW` returns a pointer to the (heap-allocated) list.
 
 ```c
-LIST_NEW(list_int_t, list);
-```
-
-You can also let the library handle the type creating for you. This make sense if the list is only intended to be used within a function.
-
-```c
-LIST_NEW_D(int, list)
+list_int_t* list = LIST_NEW(list_int_t);
 ```
 
 ### List operations
 
-Either way, the result is a linked list with the name `list`. You can now perform the following list operations. The first argument is always the list itself, so calling these functions looks like this: `LIST_APPEND(list, [arguments])`. In the following, `T` is used to denote the element type of the list.
+You can now perform the following list operations. The first argument is always the list itself, so calling these functions looks like this: `LIST_APPEND(list, [arguments])`. In the following, `T` is used to denote the element type of the list.
 
 | Name           | Description                                   | Arguments                   | Return |
 | -------------- | --------------------------------------------- | --------------------------- | ------ |
@@ -66,8 +60,10 @@ The list is heap-allocated and thus needs to be freed. This can be done using `L
 #include <stdio.h>
 #include "list.h"
 
+LIST_DEF(int, list_int_t)
+
 int main() {
-    LIST_NEW_D(int, list);
+    list_int_t* LIST_NEW(list_int_t);
     LIST_PREPEND(list, 1);
     LIST_INSERT(list, 1, 2);
 
